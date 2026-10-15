@@ -1,0 +1,27 @@
+[tools]
+biome = "2.5.15"
+
+[tasks.dev]
+description = "Serve the page at https://newtab.localhost with Caddy"
+run = "caddy run"
+
+[tasks.lint]
+description = "Lint JS, CSS and JSON with Biome"
+run = "biome lint"
+
+[tasks."docker:build"]
+description = "Build the Caddy image"
+run = "docker build -t newtab ."
+
+[tasks."docker:run"]
+description = "Serve the image on http://localhost:8080"
+depends = ["docker:build"]
+run = "docker run --rm -p 8080:80 newtab"
+
+[tasks.package]
+description = "Zip the extension into dist/newtab.zip for Chrome"
+run = [
+  "mkdir -p dist",
+  "rm -f dist/newtab.zip",
+  "zip -q dist/newtab.zip manifest.json index.html script.js style.css lit-html.js",
+]

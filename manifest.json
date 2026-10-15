@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "new tab",
+  "version": "1.0.0",
+  "description": "Minimalistic new tab page with search, bookmarks, and top sites.",
+  "permissions": ["topSites", "history"],
+  "host_permissions": ["https://www.google.com/"],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}

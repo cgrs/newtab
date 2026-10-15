@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>new tab</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="main">
+    <div id="greeting">
+      <span id="greeting-salutation"></span>, <span id="greeting-name"></span><input id="greeting-name-input"
+        type="text" spellcheck="false" autocomplete="off">.
+    </div>
+
+    <div id="search-wrapper">
+      <input id="search-input" type="text" placeholder="search..." autocomplete="off" spellcheck="false" autofocus>
+      <div id="suggestions"></div>
+    </div>
+
+    <div id="top-sites-section">
+      <div class="cat-name">top sites</div>
+      <top-sites-grid id="top-sites-grid"></top-sites-grid>
+    </div>
+
+    <div id="bookmarks-section">
+      <bookmark-grid id="bookmarks-grid"></bookmark-grid>
+    </div>
+  </div>
+
+  <div id="settings-panel">
+    <div class="settings-title">settings</div>
+    <div class="setting-row">
+      <span>search bar</span>
+      <label class="toggle-label">
+        <input type="checkbox" id="setting-search" checked>
+        <span class="toggle-pill"></span>
+      </label>
+    </div>
+    <div class="setting-row">
+      <span>favicons</span>
+      <label class="toggle-label">
+        <input type="checkbox" id="setting-favicons" checked>
+        <span class="toggle-pill"></span>
+      </label>
+    </div>
+    <div class="setting-slider-row">
+      <span>columns</span>
+      <input type="range" id="setting-cols" min="3" max="12" value="3">
+      <output id="setting-cols-val">3</output>
+    </div>
+    <div class="setting-slider-row">
+      <span>width</span>
+      <input type="range" id="setting-width" min="720" max="1200" value="720">
+    </div>
+    <div class="setting-row" style="margin-top:12px;align-items:flex-start;flex-direction:column;gap:8px;">
+      <span>accent color</span>
+      <div id="color-panel"></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-subtitle">bookmarks</div>
+      <div class="settings-actions">
+        <label id="import-label" for="import-file">import</label>
+        <input id="import-file" type="file" accept=".html,.htm" style="display:none">
+        <button id="export-btn">export</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toolbar">
+    <button id="edit-toggle">edit</button>
+  </div>
+
+  <dialog id="import-dlg">
+    <p id="import-dlg-msg">How should the imported bookmarks be handled?</p>
+    <div id="dlg-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px;">
+      <button id="import-cancel">cancel</button>
+      <button id="import-merge">merge</button>
+      <button id="import-replace">replace</button>
+    </div>
+  </dialog>
+
+  <dialog id="confirm-dlg">
+    <p id="dlg-msg"></p>
+    <div id="dlg-actions">
+      <button id="dlg-cancel">cancel</button>
+      <button id="dlg-confirm">delete</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="script.js"></script>
+</body>
+
+</html>
