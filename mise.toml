@@ -20,6 +20,7 @@ run = "docker run --rm -p 8080:80 newtab"
 
 [tasks.package]
 description = "Build dist/newtab.zip and a signed dist/newtab.crx (key: newtab.pem, created on first run)"
+shell = "bash -c"
 run = '''
 set -euo pipefail
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
