@@ -19,9 +19,18 @@ depends = ["docker:build"]
 run = "docker run --rm -p 8080:80 newtab"
 
 [tasks.package]
-description = "Zip the extension into dist/newtab.zip for Chrome"
-run = [
-  "mkdir -p dist",
-  "rm -f dist/newtab.zip",
-  "zip -q dist/newtab.zip manifest.json index.html script.js style.css lit-html.js",
-]
+description = "Build dist/newtab.zip and a signed dist/newtab.crx (key: newtab.pem, created on first run)"
+run = '''
+set -euo pipefail
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+rm -rf dist && mkdir -p dist/newtab
+cp manifest.json index.html script.js style.css lit-html.js dist/newtab/
+(cd dist/newtab && zip -q ../newtab.zip *)
+key=""
+[ -f newtab.pem ] && key="--pack-extension-key=$PWD/newtab.pem"
+profile=$(mktemp -d)
+"$CHROME" --user-data-dir="$profile" --no-message-box --pack-extension="$PWD/dist/newtab" ${key:+"$key"} >/dev/null 2>&1
+rm -rf "$profile"
+[ -f dist/newtab.pem ] && mv dist/newtab.pem newtab.pem
+ls -l dist/newtab.crx dist/newtab.zip
+'''

@@ -25,3 +25,26 @@ jobs:
           curl -fsS -o /dev/null http://localhost:8080/
           curl -fsS -o /dev/null http://localhost:8080/lit-html.js
           docker stop newtab
+
+  package:
+    if: github.event_name == 'push'
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: Restore signing key
+        env:
+          NEWTAB_PEM: ${{ secrets.NEWTAB_PEM }}
+        run: |
+          if [ -z "$NEWTAB_PEM" ]; then echo "NEWTAB_PEM secret is missing" >&2; exit 1; fi
+          printf '%s\n' "$NEWTAB_PEM" > newtab.pem
+      - run: xvfb-run -a mise run package
+        env:
+          CHROME: google-chrome
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newtab-${{ github.sha }}
+          path: |
+            dist/newtab.crx
+            dist/newtab.zip

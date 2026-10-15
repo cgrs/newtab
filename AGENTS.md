@@ -11,9 +11,9 @@ Tasks live in `mise.toml` (`mise tasks` lists them):
 - `mise run lint`: Biome lint over JS, CSS, HTML and JSON. The formatter is disabled on purpose to keep the hand-aligned code; `biome.json` excludes the vendored `lit-html.js` and turns off three a11y rules that don't apply (no forms, intentional autofocus, toggle labels that wrap their checkbox).
 - `mise run dev`: `caddy run` in the foreground, serving the repo at `https://newtab.localhost`. `./start.sh` does the same in the background, logging to `caddy.log`.
 - `mise run docker:build` / `mise run docker:run`: build the `caddy:2-alpine` image and serve it on `http://localhost:8080`. The `Dockerfile` lists files explicitly, so add any new asset there.
-- `mise run package`: zip the extension files into `dist/newtab.zip`. This list is explicit too.
+- `mise run package`: stage the extension files into `dist/newtab/` (explicit list, like the `Dockerfile`), zip them to `dist/newtab.zip` and sign `dist/newtab.crx` with Chrome's `--pack-extension`, macOS Chrome path by default (override with `CHROME`). The signing key `newtab.pem` is created on first run and gitignored; it fixes the extension ID, so reuse it rather than regenerating.
 
-CI (`.github/workflows/ci.yml`) runs lint, plus a docker build with a curl smoke test.
+CI (`.github/workflows/ci.yml`) runs lint, plus a docker build with a curl smoke test. On pushes to `main` it also runs `mise run package` under `xvfb-run` with the key from the `NEWTAB_PEM` secret, and uploads the `.crx` and `.zip` as a workflow artifact. The job fails rather than signing with a fresh key when the secret is missing.
 
 ## Running it
 
